@@ -61,7 +61,10 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS':  [
+            os.path.join(BASE_DIR, 'template'),  # First template directory
+            os.path.join(BASE_DIR, 'store', 'templates', 'store'),  # Second template directory
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -156,8 +159,8 @@ AUTHENTICATION_BACKENDS=[
 EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+EMAIL_HOST_USER = "apshvp@gmail.com"
+EMAIL_HOST_PASSWORD ="vsyo aeyd iyvh ubdu"
 EMAIL_USE_TLS = True
 # JWT Settings
 SIMPLE_JWT = {

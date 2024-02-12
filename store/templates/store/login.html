@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+    <!-- Add any CSS stylesheets here -->
+    <style>
+        /* Add your CSS styles here */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input[type="email"],
+        .form-group input[type="text"],
+        .form-group input[type="password"],
+        .form-group input[type="checkbox"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .btn-submit {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .btn-change-password,
+        .btn-reset-password,
+        .btn-visit-home {
+            display: block;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .btn-change-password {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .btn-reset-password {
+            background-color: #ffc107;
+            color: #000;
+        }
+        .btn-visit-home {
+            background-color: #28a745;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Login</h1>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn-submit">Login</button>
+        </form>
+        <div id="loginMessage"></div>
+        <!-- Button to redirect to change password page -->
+        <a href="{% url 'changepassword' %}" class="btn-change-password">Change Password</a>
+        <!-- Button to redirect to reset password page -->
+        <a href="{% url 'send-reset-password-email' %}" class="btn-reset-password">Reset Password</a>
+        <!-- Button to redirect to home page -->
+        <a href="{% url 'store' %}" class="btn-visit-home">Visit Home Page</a>
+    </div>
+    <!-- Include login.js script -->
+    <script src="{% static 'js/login.js' %}"></script>
+</body>
+</html>
+
