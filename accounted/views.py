@@ -31,28 +31,7 @@ class UserRegistrationView(APIView):
     token = get_tokens_for_user(user)
     return Response({'token':token, 'msg':'Registration Successful'}, status=status.HTTP_201_CREATED)
     
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.urls import reverse
-
-def login_view(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        user = authenticate(request, email=email, password=password)
-        if user is not None:
-            login(request, user)
-            # Redirect to the home page after successful login
-            # return redirect('home')  # Assuming 'home' is the name of your home page URL
-        else:
-            # Authentication failed, handle accordingly
-            return render(request, 'login.html', {'error_message': 'Invalid credentials'})
-    else:
-        return render(request, 'login.html')
-
-
 class UserLoginView(APIView):
-   
     renderer_classes =[UserRenderer, TemplateHTMLRenderer]
     template_name = 'login.html'
    
@@ -71,7 +50,7 @@ class UserLoginView(APIView):
             if user is not None:
                 token = get_tokens_for_user(user)
                 return Response({'token':token ,'msg':'Login Success'}, status = status.HTTP_201_CREATED)
-                return redirect('home')
+                # return redirect('home')
             else:
                 return Response({'errors':{'non_field_errors': ['Email or Password is not valid']}}, status = status.HTTP_404_NOT_FOUND)
  

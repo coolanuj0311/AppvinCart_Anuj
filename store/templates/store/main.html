@@ -66,16 +66,29 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'checkout' %}">Order</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                {% comment %} <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Profile</a>
+                </li> {% endcomment %}
+                <!-- Sorting options dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSort" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sort 
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownSort">
+                        <a class="dropdown-item" href="{% url 'StoreView' %}?sort=high_to_low">Price: High to Low</a>
+                        <a class="dropdown-item" href="{% url 'StoreView' %}?sort=low_to_high">Price: Low to High</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'new_arrivals' %}?sort=new_arrivals">Newest Arrivals First</a>
+                    </div>
                 </li>
+                
             </ul>
             <div class="form-inline my-2 my-lg-0">
                 <a href="{% url 'register' %}" class="btn btn-warning">Login</a>
                 <a href="{% url 'cart' %}">
                     <img id="cart-icon" src="{% static 'images/cart.png' %}">
                 </a>
-                <p id="cart-total">{{ cartItems }}</p>
+                <p id="cart-total" class="ml-2 mr-4">{{ cartItems }}</p>
             </div>
         </div>
     </nav>
@@ -90,7 +103,5 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
-
 </body>
-
 </html>

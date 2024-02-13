@@ -86,9 +86,9 @@
         </form>
         <div id="loginMessage"></div>
         <!-- Button to redirect to change password page -->
-        <a href="{% url 'changepassword' %}" class="btn-change-password">Change Password</a>
+        {% comment %} <a href="{% url 'changepassword' %}" class="btn-change-password">Change Password</a>
         <!-- Button to redirect to reset password page -->
-        <a href="{% url 'send-reset-password-email' %}" class="btn-reset-password">Reset Password</a>
+        <a href="{% url 'send-reset-password-email' %}" class="btn-reset-password">Reset Password</a> {% endcomment %}
         <!-- Button to redirect to home page -->
         <a href="{% url 'store' %}" class="btn-visit-home">Visit Home Page</a>
     </div>

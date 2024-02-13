@@ -17,11 +17,18 @@ class Customer(models.Model):
         return self.name
 
 
+from django.db import models
+
 class Product(models.Model):
     name = models.CharField(max_length=200)
-    price = models.DecimalField(max_digits=7,decimal_places=2)
+    price = models.DecimalField(max_digits=7, decimal_places=2)
     digital = models.BooleanField(default=False)
     image = models.ImageField(null=True, blank=True)
+    ratings = models.IntegerField(default=0)
+    discount = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    quantity = models.PositiveIntegerField(default=0)
+    color = models.CharField(max_length=50, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -34,6 +41,9 @@ class Product(models.Model):
             url = ''
         return url
 
+    @property
+    def is_in_stock(self):
+        return self.quantity > 0
 
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)

@@ -69,7 +69,9 @@ def updateItem(request):
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
+
 def processOrder(request):
+
    
 
     transaction_id = datetime.datetime.now().timestamp()
@@ -103,4 +105,35 @@ def processOrder(request):
 
 
             return JsonResponse({'error': 'User is not authenticated'}, status=401)
-    
+def new_arrivals(request):
+    new_arrivals = Product.objects.filter(digital=True)
+    return render(request, 'new_arrivals.html', {'new_arrivals': new_arrivals})
+
+from django.shortcuts import render, redirect
+from django.views.generic import ListView  # Add this import statement
+from .models import Product, Order, OrderItem
+from .utils import cartData, guestOrder
+
+# Your other views and functions go here
+from django.shortcuts import render
+from .models import Product
+
+from django.views.generic import ListView
+from .models import Product
+
+class StoreView(ListView):
+    model = Product
+    template_name = 'store.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        sort_option = self.request.GET.get('sort')
+
+        if sort_option == 'high_to_low':
+            queryset = queryset.order_by('-price')
+        elif sort_option == 'low_to_high':
+            queryset = queryset.order_by('price')
+
+        return queryset
+

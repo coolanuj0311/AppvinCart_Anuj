@@ -50,6 +50,7 @@ def cartData(request):
 
     return {'cartItems': cartItems, 'order': order, 'items': items}
 
+
 def guestOrder(request, data):
     print('User is not logged in')
     print('COOKIES', request.COOKIES)
