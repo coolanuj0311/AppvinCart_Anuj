@@ -34,7 +34,6 @@ def checkout(request):
     items=data['items']
     context = {'items': items, 'order': order, 'cartItems': cartItems}
     return render(request, 'store/checkout.html', context)
-
 def updateItem(request):
     
 
@@ -136,4 +135,27 @@ class StoreView(ListView):
             queryset = queryset.order_by('price')
 
         return queryset
+def buyNow(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        productId = data.get('productId')
+
+        try:
+            customer = request.user.customer
+            product = Product.objects.get(id=productId)
+            order, created = Order.objects.get_or_create(customer=customer, complete=False)
+
+            # Create order item for the selected product
+            orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+            orderItem.quantity = 1  # Set quantity to 1 for 'buy now'
+            orderItem.save()
+
+            return JsonResponse({'success': 'Product bought successfully!'}, status=200)
+
+        except Product.DoesNotExist:
+            return JsonResponse({'error': 'Product does not exist'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
 

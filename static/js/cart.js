@@ -14,6 +14,29 @@ function handleUpdateCartClick(event) {
 
 // Attach event listeners to update buttons
 var updateBtns = document.getElementsByClassName('update-cart');
+
+for (var i = 0; i < updateBtns.length; i++) {
+    updateBtns[i].addEventListener('click', function() {
+        var productId = this.dataset.product;
+        var action = this.dataset.action;
+        console.log('productId:', productId, 'Action:', action);
+
+        if (user === 'AnonymousUser') {
+            console.log('User is not authenticated. Redirecting to login page.');
+            window.location.href = '/login/';
+        } else {
+            if (action === 'buy') {
+                // Send 'buy' action to server
+                updateUserOrder(productId, 'buy');
+            } else {
+                // Send 'add' or 'remove' action to server
+                updateUserOrder(productId, action);
+            }
+        }
+    });
+}
+
+var updateBtns = document.getElementsByClassName('update-cart');
 for (var i = 0; i < updateBtns.length; i++) {
     updateBtns[i].addEventListener('click', handleUpdateCartClick);
 }
@@ -45,6 +68,49 @@ function updateUserOrder(productId, action) {
         console.error('Error:', error);
     });
 }
+
+var buyBtns = document.getElementsByClassName('buy-now');
+
+for (var i = 0; i < buyBtns.length; i++) {
+    buyBtns[i].addEventListener('click', function() {
+        var productId = this.dataset.product;
+        console.log('productId:', productId);
+
+        if (user === 'AnonymousUser') {
+            console.log('User is not authenticated. Redirecting to login page.');
+            window.location.href = '/login/';
+        } else {
+            // Send 'buy' action to server
+            buyProduct(productId);
+        }
+    });
+}
+
+function buyProduct(productId) {
+    console.log('User is authenticated, sending data...');
+
+    var url = '/buy_now/';
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify({ 'productId': productId })
+    })
+    .then((response) => {
+        return response.json();
+    })
+    .then((data) => {
+        console.log('data:', data);
+        // Redirect to checkout page after buying the product
+        window.location.href = '/checkout/';
+    });
+}
+
+
+
 
 // Function to get CSRF token from cookies
 function getCookie(name) {
