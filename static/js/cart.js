@@ -13,6 +13,8 @@ function handleUpdateCartClick(event) {
 }
 
 // Attach event listeners to update buttons
+
+
 var updateBtns = document.getElementsByClassName('update-cart');
 
 for (var i = 0; i < updateBtns.length; i++) {
@@ -26,70 +28,19 @@ for (var i = 0; i < updateBtns.length; i++) {
             window.location.href = '/login/';
         } else {
             if (action === 'buy') {
-                // Send 'buy' action to server
-                updateUserOrder(productId, 'buy');
+                // Redirect to checkout page after adding the product to the cart
+                updateUserOrder(productId, 'add', true);
             } else {
-                // Send 'add' or 'remove' action to server
-                updateUserOrder(productId, action);
+                updateUserOrder(productId, action, false);
             }
         }
     });
 }
 
-var updateBtns = document.getElementsByClassName('update-cart');
-for (var i = 0; i < updateBtns.length; i++) {
-    updateBtns[i].addEventListener('click', handleUpdateCartClick);
-}
-
-// Function to update user order
-function updateUserOrder(productId, action) {
-    console.log('User is logged in, sending data...');
-    var url = '/update_item/'; // Make sure the URL is correct
-    var csrftoken = getCookie('csrftoken'); // Ensure csrftoken is defined
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrftoken,
-        },
-        body: JSON.stringify({
-            'productId': productId,
-            'action': action
-        })
-    })
-    .then((response) => {
-        return response.json();
-    })
-    .then((data) => {
-        console.log('data:', data);
-        location.reload();
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-}
-
-var buyBtns = document.getElementsByClassName('buy-now');
-
-for (var i = 0; i < buyBtns.length; i++) {
-    buyBtns[i].addEventListener('click', function() {
-        var productId = this.dataset.product;
-        console.log('productId:', productId);
-
-        if (user === 'AnonymousUser') {
-            console.log('User is not authenticated. Redirecting to login page.');
-            window.location.href = '/login/';
-        } else {
-            // Send 'buy' action to server
-            buyProduct(productId);
-        }
-    });
-}
-
-function buyProduct(productId) {
+function updateUserOrder(productId, action, redirectToCheckout) {
     console.log('User is authenticated, sending data...');
 
-    var url = '/buy_now/';
+    var url = '/update_item/';
 
     fetch(url, {
         method: 'POST',
@@ -97,15 +48,18 @@ function buyProduct(productId) {
             'Content-Type': 'application/json',
             'X-CSRFToken': csrftoken,
         },
-        body: JSON.stringify({ 'productId': productId })
+        body: JSON.stringify({ 'productId': productId, 'action': action })
     })
     .then((response) => {
         return response.json();
     })
     .then((data) => {
         console.log('data:', data);
-        // Redirect to checkout page after buying the product
-        window.location.href = '/checkout/';
+        if (redirectToCheckout) {
+            window.location.href = '/checkout/';
+        } else {
+            location.reload();
+        }
     });
 }
 

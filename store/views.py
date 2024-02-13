@@ -34,36 +34,6 @@ def checkout(request):
     items=data['items']
     context = {'items': items, 'order': order, 'cartItems': cartItems}
     return render(request, 'store/checkout.html', context)
-def updateItem(request):
-    
-
-    data = json.loads(request.body)
-    productId = data.get('productId')
-    action = data.get('action')
-
-    
-
-    try:
-        customer = request.user.customer
-        product = Product.objects.get(id=productId)
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
-
-        if action == 'add':
-            orderItem.quantity += 1
-        elif action == 'remove':
-            orderItem.quantity -= 1
-
-        orderItem.save()
-
-        if orderItem.quantity <= 0:
-            orderItem.delete()
-
-        return JsonResponse('Item was updated!', safe=False)
-    except Product.DoesNotExist:
-        return JsonResponse({'error': 'Product does not exist'}, status=404)
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -135,27 +105,46 @@ class StoreView(ListView):
             queryset = queryset.order_by('price')
 
         return queryset
-def buyNow(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        productId = data.get('productId')
+from django.http import JsonResponse
+import json
 
-        try:
-            customer = request.user.customer
-            product = Product.objects.get(id=productId)
-            order, created = Order.objects.get_or_create(customer=customer, complete=False)
+from django.http import JsonResponse
+import json
 
-            # Create order item for the selected product
+def updateItem(request):
+    data = json.loads(request.body)
+    productId = data.get('productId')
+    action = data.get('action')
+
+    try:
+        customer = request.user.customer
+        product = Product.objects.get(id=productId)
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+
+        # Ensure that only the specific product is bought when 'buy' action is received
+        if action == 'buy':
             orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
             orderItem.quantity = 1  # Set quantity to 1 for 'buy now'
             orderItem.save()
+            order.save()  # Save the order
+            return JsonResponse('Item was bought!', safe=False)
 
-            return JsonResponse({'success': 'Product bought successfully!'}, status=200)
+        # For 'add' or 'remove' actions
+        orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
-        except Product.DoesNotExist:
-            return JsonResponse({'error': 'Product does not exist'}, status=404)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
+        if action == 'add':
+            orderItem.quantity += 1
+        elif action == 'remove':
+            orderItem.quantity -= 1
 
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
+        if orderItem.quantity <= 0:
+            orderItem.delete()
+        else:
+            orderItem.save()
 
+        return JsonResponse('Item was updated!', safe=False)
+
+    except Product.DoesNotExist:
+        return JsonResponse({'error': 'Product does not exist'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
