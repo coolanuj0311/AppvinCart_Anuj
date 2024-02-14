@@ -17,20 +17,22 @@ def get_tokens_for_user(user):
   }
 
 class UserRegistrationView(APIView):
-  renderer_classes = [UserRenderer,TemplateHTMLRenderer]
-  template_name = 'register.html'
-
-  def get(self, request, format =None):
-       reg = UserRegistrationSerializer()
-       return Response({'reg': reg},template_name = self.template_name)
-     
-  def post(self, request, format=None):
-    serializer = UserRegistrationSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    user = serializer.save()
-    token = get_tokens_for_user(user)
-    return Response({'token':token, 'msg':'Registration Successful'}, status=status.HTTP_201_CREATED)
     
+    renderer_classes =[UserRenderer, TemplateHTMLRenderer]
+    template_name = 'register.html'
+    
+    def get(self, request, format=None):
+        reg_form = UserRegistrationSerializer()
+        return Response({'reg_form': reg_form}, template_name=self.template_name)
+    # we use post as user will give data to register himself , from here the request's data will be send to serializer
+    def post(self, request, format = None):
+        serializer = UserRegistrationSerializer(data = request.data)
+        if serializer.is_valid(raise_exception = True):
+            user = serializer.save()
+            token = get_tokens_for_user(user)
+            return Response({'token':token ,'msg':'Registration Successful'}, status = status.HTTP_201_CREATED) # status is 201 as data is being created
+            return redirect('login')
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 class UserLoginView(APIView):
     renderer_classes =[UserRenderer, TemplateHTMLRenderer]
     template_name = 'login.html'
