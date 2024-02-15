@@ -10,7 +10,7 @@ urlpatterns=[
     path('process_order/',views.processOrder,name="process_order"),
     path('StoreView/',StoreView.as_view(),name="StoreView"),
     path('new_arrivals/',views.new_arrivals,name="new_arrivals"),
-   
+    
   
     
 
@@ -19,4 +19,3 @@ urlpatterns=[
     
    
 ]
-   

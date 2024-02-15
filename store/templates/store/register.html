@@ -5,32 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Registration</title>
-    <!-- Add any CSS stylesheets here -->
+    <!-- Add Bootstrap CSS CDN link here -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        /* Add your CSS styles here */
-        body {
-            font-family: Arial, sans-serif;
-        }
+        /* Bootstrap grid system */
         .container {
             max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
+        }
+        /* Form container */
+        .form-container {
             background-color: #f9f9f9;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 50px;
         }
-        h1 {
+        /* Form title */
+        .form-title {
             text-align: center;
             margin-bottom: 30px;
         }
+        /* Form group */
         .form-group {
             margin-bottom: 20px;
         }
+        /* Form labels */
         .form-group label {
             display: block;
             font-weight: bold;
             margin-bottom: 5px;
         }
+        /* Form inputs */
         .form-group input[type="email"],
         .form-group input[type="text"],
         .form-group input[type="password"],
@@ -42,6 +47,7 @@
             border: 1px solid #ccc;
             box-sizing: border-box;
         }
+        /* Checkbox alignment */
         .form-group.checkbox label {
             display: flex;
             align-items: center;
@@ -49,6 +55,7 @@
         .form-group.checkbox label span {
             margin-right: 10px;
         }
+        /* Submit button */
         .btn-submit {
             padding: 10px 20px;
             font-size: 16px;
@@ -61,6 +68,7 @@
             width: 100%;
             margin-top: 20px;
         }
+        /* Login button */
         .btn-login {
             padding: 10px 20px;
             font-size: 16px;
@@ -79,36 +87,40 @@
 </head>
 <body>
     <div class="container">
-        <h1>User Registration</h1>
-        <form id="registrationForm">
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="password2">Confirm Password:</label>
-                <input type="password" id="password2" name="password2" required>
-            </div>
-            <div class="form-group checkbox">
-                <label>
-                    <span>I agree to the Terms & Conditions</span>
-                    <input type="checkbox" id="tc" name="tc" required>
-                </label>
-            </div>
-            <button type="submit" class="btn-submit">Register</button>
-        </form>
-        <div id="registrationMessage"></div>
-        <!-- Button to redirect to login page -->
-        <a href="{% url 'login' %}" class="btn-login">Already have an account? Login</a>
+        <div class="form-container">
+            <h1 class="form-title">User Registration</h1>
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="password2">Confirm Password:</label>
+                    <input type="password" id="password2" name="password2" required class="form-control">
+                </div>
+                <div class="form-group checkbox">
+                    <label>
+                        <span>I agree to the Terms & Conditions</span>
+                        <input type="checkbox" id="tc" name="tc" required>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-submit">Register</button>
+            </form>
+            <div id="registrationMessage"></div>
+            <!-- Button to redirect to login page -->
+            <a href="{% url 'login' %}" class="btn btn-login">Already have an account? Login</a>
+        </div>
     </div>
+    <!-- Include Bootstrap JS CDN link here -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Include register.js script -->
     <script src="{% static 'js/register.js' %}"></script>
 </body>

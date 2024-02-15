@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
-    'accounted'
+    'accounted',
+    'payments.apps.PaymentsConfig'
 ]
 
 MIDDLEWARE = [
@@ -190,3 +191,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
 ]
 
+STRIPE_PUBLIC_KEY="pk_live_51OjyPXSHvzT4MJlEuZyGNfI2VL9HGc9inIwgJpRFfwjHP7TXEoczMb5QH748KUG3XYZ4a9Fnq2zG9GN1uxsdNbAI00756FatOb"
+STRIPE_PRIVATE_KEY="sk_test_51OjyPXSHvzT4MJlEjQZYzE8ZZek9oh7fW6rdyQMjLxpVTPTXfbAVXtvlAjCc1BG6W5oDG2zK21rdazMeeGCURHHD008sz9EMrt"
+STRIPE_SECRET_KEY="sk_test_51OjyPXSHvzT4MJlEjQZYzE8ZZek9oh7fW6rdyQMjLxpVTPTXfbAVXtvlAjCc1BG6W5oDG2zK21rdazMeeGCURHHD008sz9EMrt"

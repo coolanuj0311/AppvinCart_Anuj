@@ -148,3 +148,4 @@ def updateItem(request):
         return JsonResponse({'error': 'Product does not exist'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+    
