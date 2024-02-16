@@ -5,10 +5,9 @@ import json
 import datetime
 from .utils import cookieCart
 from .utils import cartData
-
 from .utils import guestOrder
 import json
-import stripe
+
 from django.core.mail import send_mail
 from django.conf import settings
 from django.views.generic import TemplateView
@@ -16,6 +15,15 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 from django.views import View
 from store.models import Product
+
+ # Add this import statement
+from .models import Product, Order, OrderItem
+from .utils import cartData, guestOrder
+
+# Your other views and functions go here
+from django.shortcuts import render
+from django.views.generic import ListView  # Add this import statement
+from .models import Product, Order, OrderItem
 
 def store(request):
     data=cartData(request)
@@ -79,25 +87,11 @@ def processOrder(request):
                         state=shipping_data.get('state'),
                         pincode=shipping_data.get('pincode')
                     )
-
-
-
             return JsonResponse({'error': 'User is not authenticated'}, status=401)
+    
 def new_arrivals(request):
     new_arrivals = Product.objects.filter(digital=True)
     return render(request, 'new_arrivals.html', {'new_arrivals': new_arrivals})
-
-from django.shortcuts import render, redirect
-from django.views.generic import ListView  # Add this import statement
-from .models import Product, Order, OrderItem
-from .utils import cartData, guestOrder
-
-# Your other views and functions go here
-from django.shortcuts import render
-from .models import Product
-
-from django.views.generic import ListView
-from .models import Product
 
 class StoreView(ListView):
     model = Product
@@ -114,11 +108,6 @@ class StoreView(ListView):
             queryset = queryset.order_by('price')
 
         return queryset
-from django.http import JsonResponse
-import json
-
-from django.http import JsonResponse
-import json
 
 def updateItem(request):
     data = json.loads(request.body)
