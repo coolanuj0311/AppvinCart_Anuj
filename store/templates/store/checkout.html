@@ -1,4 +1,5 @@
 {% extends 'store/main.html' %}
+
 {% load static %}
 {% block content %}
 
@@ -49,7 +50,8 @@
 
 
             <button id="make-payment">Make payment</button>
-            <a href="index.html"><button>Go to Payment using Strip</button></a>
+            <a class="btn btn-outline-dark" href="{% url 'payment_method' %}">&#x2190;payment make using stripe</a>
+            
            
         </div>
     </div>
@@ -57,6 +59,8 @@
     <div class="col-lg-6">
         <div class="box-element">
             <a class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+            
+            
             <hr>
             <h3>Order Summary</h3>
             <hr>

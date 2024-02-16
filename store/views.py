@@ -7,6 +7,15 @@ from .utils import cookieCart
 from .utils import cartData
 
 from .utils import guestOrder
+import json
+import stripe
+from django.core.mail import send_mail
+from django.conf import settings
+from django.views.generic import TemplateView
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse, HttpResponse
+from django.views import View
+from store.models import Product
 
 def store(request):
     data=cartData(request)
@@ -148,4 +157,5 @@ def updateItem(request):
         return JsonResponse({'error': 'Product does not exist'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+    
     

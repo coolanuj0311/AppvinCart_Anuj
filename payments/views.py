@@ -1,143 +1,55 @@
-import json
+
+
+from django.shortcuts import render
+from django.http import JsonResponse
 import stripe
+from django.shortcuts import render
+from django.http import JsonResponse
 from django.core.mail import send_mail
-from django.conf import settings
-from django.views.generic import TemplateView
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse, HttpResponse
-from django.views import View
-from store.models import Product
+import stripe
 
+# Assuming you've already configured your Stripe API keys
+stripe.api_key = 'sk_test_51OjyPXSHvzT4MJlEjQZYzE8ZZek9oh7fW6rdyQMjLxpVTPTXfbAVXtvlAjCc1BG6W5oDG2zK21rdazMeeGCURHHD008sz9EMrt'
 
-stripe.api_key = settings.STRIPE_SECRET_KEY
-
-
-class SuccessView(TemplateView):
-    template_name = "success.html"
-
-
-class CancelView(TemplateView):
-    template_name = "cancel.html"
-
-
-class ProductLandingPageView(TemplateView):
-    template_name = "checkout.html"
-
-    def get_context_data(self, **kwargs):
-        product = Product.objects.get(name="Test Product")
-        context = super(ProductLandingPageView, self).get_context_data(**kwargs)
-        context.update({
-            "product": product,
-            "STRIPE_PUBLIC_KEY": settings.STRIPE_PUBLIC_KEY
-        })
-        return context
-
-
-class CreateCheckoutSessionView(View):
-    def post(self, request, *args, **kwargs):
-        product_id = self.kwargs["pk"]
-        product = Product.objects.get(id=product_id)
-        YOUR_DOMAIN = "http://127.0.0.1:8000"
-        checkout_session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=[
-                {
-                    'price_data': {
-                        'currency': 'usd',
-                        'unit_amount': product.price,
-                        'product_data': {
-                            'name': product.name,
-                            # 'images': ['https://i.imgur.com/EHyR2nP.png'],
-                        },
-                    },
-                    'quantity': 1,
-                },
-            ],
-            metadata={
-                "product_id": product.id
-            },
-            mode='payment',
-            success_url=YOUR_DOMAIN + '/success/',
-            cancel_url=YOUR_DOMAIN + '/cancel/',
-        )
-        return JsonResponse({
-            'id': checkout_session.id
-        })
-
-
-@csrf_exempt
-def stripe_webhook(request):
-    payload = request.body
-    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
-    event = None
-
-    try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
-        )
-    except ValueError as e:
-        # Invalid payload
-        return HttpResponse(status=400)
-    except stripe.error.SignatureVerificationError as e:
-        # Invalid signature
-        return HttpResponse(status=400)
-
-    # Handle the checkout.session.completed event
-    if event['type'] == 'checkout.session.completed':
-        session = event['data']['object']
-
-        customer_email = session["customer_details"]["email"]
-        product_id = session["metadata"]["product_id"]
-
-        product = Product.objects.get(id=product_id)
-
-        send_mail(
-            subject="Here is your product",
-            message=f"Thanks for your purchase. Here is the product you ordered. The URL is {product.url}",
-            recipient_list=[customer_email],
-            from_email="matt@test.com"
-        )
-
-        # TODO - decide whether you want to send the file or the URL
-    
-    elif event["type"] == "payment_intent.succeeded":
-        intent = event['data']['object']
-
-        stripe_customer_id = intent["customer"]
-        stripe_customer = stripe.Customer.retrieve(stripe_customer_id)
-
-        customer_email = stripe_customer['email']
-        product_id = intent["metadata"]["product_id"]
-
-        product = Product.objects.get(id=product_id)
-
-        send_mail(
-            subject="Here is your product",
-            message=f"Thanks for your purchase. Here is the product you ordered. The URL is {product.url}",
-            recipient_list=[customer_email],
-            from_email="matt@test.com"
-        )
-
-    return HttpResponse(status=200)
-
-
-class StripeIntentView(View):
-    def post(self, request, *args, **kwargs):
+def payment_method(request):
+    if request.method == 'POST':
+        payment_method_id = request.POST.get('payment_method_id')
+        
         try:
-            req_json = json.loads(request.body)
-            customer = stripe.Customer.create(email=req_json['email'])
-            product_id = self.kwargs["pk"]
-            product = Product.objects.get(id=product_id)
-            intent = stripe.PaymentIntent.create(
-                amount=product.price,
-                currency='usd',
-                customer=customer['id'],
-                metadata={
-                    "product_id": product.id
+            # Create a new customer in Stripe
+            customer = stripe.Customer.create(
+                payment_method=payment_method_id,
+                email=request.user.email,  # Assuming you have a user object
+                invoice_settings={
+                    'default_payment_method': payment_method_id
                 }
             )
-            return JsonResponse({
-                'clientSecret': intent['client_secret']
-            })
+            
+            # Optionally, save the payment method ID to your user's profile
+            # request.user.payment_method_id = payment_method_id
+            # request.user.save()
+
+            # Send email notification
+            send_mail(
+                'Payment Successful',
+                'Your payment was successful.',
+                'apshvp@gmail.com',  # Replace with sender email
+                ['lavashri0303@gmail.com'],  # Replace with recipient email
+                fail_silently=False,
+            )
+
+
+            # Render payment.html template with success message
+            return render(request, 'productpayment.html', {'success': True})
+        except stripe.error.InvalidRequestError as e:
+            # Return error response if the payment method ID is invalid
+            return JsonResponse({'error': str(e)}, status=400)
         except Exception as e:
-            return JsonResponse({ 'error': str(e) })
+            # Return error response for other exceptions
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        # Render the payment_form.html template for GET requests
+        return render(request, 'productpayment.html')
+
+    
+

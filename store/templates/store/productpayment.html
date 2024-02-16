@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        #card-element {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        #card-errors {
+            color: red;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Secure Payment</h1>
+
+    <form id="payment-form">
+        <div>
+            <label for="card-element">Credit or Debit Card</label>
+            <div id="card-element">
+                <!-- A Stripe Element will be inserted here. -->
+            </div>
+            <!-- Used to display form errors. -->
+            <div id="card-errors" role="alert"></div>
+        </div>
+
+        <button id="submit-button">Submit Payment</button>
+    </form>
+</div>
+
+<script>
+    // Create a Stripe client.
+    var stripe = Stripe('pk_test_51OjyPXSHvzT4MJlEa98zk4ckAM6Mr4w3jWXJemFxFg9LmIKsJs5zIrzzyA3CPo3nU931Or7jlHhDwIxVKcBoyV0v00YVRQ4H9B');
+
+    // Create an instance of Elements.
+    var elements = stripe.elements();
+
+    // Create an instance of the card Element.
+    var card = elements.create('card');
+
+    // Add an instance of the card Element into the `card-element` div.
+    card.mount('#card-element');
+
+    // Handle real-time validation errors from the card Element.
+    card.addEventListener('change', function(event) {
+        var displayError = document.getElementById('card-errors');
+        if (event.error) {
+            displayError.textContent = event.error.message;
+        } else {
+            displayError.textContent = '';
+        }
+    });
+
+    // Handle form submission.
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Disable the submit button to prevent multiple submissions.
+        document.getElementById('submit-button').disabled = true;
+
+        // Create payment method.
+        stripe.createPaymentMethod('card', card).then(function(result) {
+            if (result.error) {
+                // Show error message to your user.
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error.message;
+
+                // Enable the submit button.
+                document.getElementById('submit-button').disabled = false;
+            } else {
+                // Send payment method ID to your server.
+                var paymentMethodId = result.paymentMethod.id;
+                // You can now submit this paymentMethodId to your Django backend for further processing.
+                console.log('Payment Method ID:', paymentMethodId);
+
+                // For demonstration purposes, this example just displays a success message.
+                alert('Hi Anuj Payment successful! Payment Method ID: ' + paymentMethodId);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
