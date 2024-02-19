@@ -14,6 +14,8 @@ class UserManager(BaseUserManager):
         user = self.model(
             email=self.normalize_email(email),
             name=name,
+           
+
             
             tc=tc,
             
@@ -31,6 +33,7 @@ class UserManager(BaseUserManager):
         user = self.create_user(
             email,
             name=name,
+          
             password=password,
             
             tc=tc,
@@ -53,6 +56,7 @@ class User(AbstractBaseUser):
     )
 
     name=models.CharField(max_length=200)
+   
     
    
     tc=models.BooleanField()

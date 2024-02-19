@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+        p {
+            text-align: center;
+        }
+        .payment-info {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment Confirmation</h1>
+        <p>Your payment was successful!</p>
+        {% comment %} <div class="payment-info">
+            <strong>Payment Intent ID:</strong> {{ payment_intent.id }} <br>
+            <strong>Amount:</strong> ${{ payment_intent.amount / 100 }} <br>
+            <strong>Payment Method:</strong> {{ payment_intent.payment_method }}
+        </div> {% endcomment %}
+    </div>
+</body>
+</html>
