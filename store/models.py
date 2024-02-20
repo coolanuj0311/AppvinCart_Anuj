@@ -4,9 +4,6 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.db import models
 
-    
-
-
 class Customer(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     # Other fields in your Customer model
@@ -15,9 +12,6 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.name
-
-
-from django.db import models
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
@@ -76,7 +70,6 @@ class Order(models.Model):
         total = sum([item.quantity for item in orderitems])
         return total
 
-
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
@@ -87,7 +80,6 @@ class OrderItem(models.Model):
     def get_total(self):
         total = self.product.price * self.quantity
         return total
-
 
 class ShippingAddress(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)

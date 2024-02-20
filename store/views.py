@@ -20,6 +20,7 @@ from store.models import Product
 from .models import Product, Order, OrderItem
 from .utils import cartData, guestOrder
 
+
 # Your other views and functions go here
 from django.shortcuts import render
 from django.views.generic import ListView  # Add this import statement
@@ -28,8 +29,6 @@ from .models import Product, Order, OrderItem
 def store(request):
     data=cartData(request)
     cartItems=data['cartItems']
-    
-
     products = Product.objects.all()
     context = {'products': products, 'cartItems': cartItems}
     return render(request, 'store/store.html', context)
@@ -39,8 +38,6 @@ def cart(request):
     cartItems=data['cartItems']
     order=data['order']
     items=data['items']
-
-
     context = {'items': items, 'order': order, 'cartItems': cartItems}
     return render(request, 'store/cart.html', context)
 
@@ -52,18 +49,12 @@ def checkout(request):
     context = {'items': items, 'order': order, 'cartItems': cartItems}
     return render(request, 'store/checkout.html', context)
 
-from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 
 def processOrder(request):
-
-   
-
     transaction_id = datetime.datetime.now().timestamp()
     data = json.loads(request.body)
-
-
     if request.user.is_authenticated:
             customer = request.user.customer
             order, created = Order.objects.get_or_create(customer=customer, complete=False)
