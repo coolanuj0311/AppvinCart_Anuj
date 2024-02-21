@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Would You Like to Have Coffee?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 90%;
+            margin: auto;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: background-color 0.3s;
+            margin: 0 10px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .btn.no {
+            background-color: #dc3545;
+        }
+
+        .btn.no:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Would You Like to Have Coffee?</h1>
+        <p>Hey there! I was thinking of grabbing a coffee. Would you like to join me?</p>
+        <div class="btn-container">
+            <button class="btn" id="yesBtn">Yes, Let's Go!</button>
+            <button class="btn no" id="noBtn">No, Maybe Next Time</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('yesBtn').addEventListener('click', function() {
+            alert('Great! Let\'s go have coffee!');
+        });
+
+        document.getElementById('noBtn').addEventListener('click', function() {
+            alert('No problem! Maybe next time.');
+        });
+    </script>
+</body>
+</html>

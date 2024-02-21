@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,7 +110,7 @@
 
 
     </form>
-    <a class="btn btn-outline-dark" href="{% url 'checkoutview' %}">&#x2190;show payment</a>
+   
     
 
     
@@ -167,6 +168,9 @@
         });
     });
 </script>
+<!-- Include payment.js script -->
+<script src="{% static 'js/stripe.js' %}"></script>
+
 
 </body>
 </html>

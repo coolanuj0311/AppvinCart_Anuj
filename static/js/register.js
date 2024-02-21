@@ -1,20 +1,3 @@
-
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('registrationForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        // Perform registration form submission here (e.g., AJAX request to server)
-
-        // For demonstration purposes, let's assume registration is successful
-        // and display the popup message
-        $('#registrationSuccessModal').modal('show');
-
-        // Clear the form fields
-        document.getElementById('registrationForm').reset();
-    });
-});
-
-
-
 document.addEventListener('DOMContentLoaded', function() {
     const registrationForm = document.getElementById('registrationForm');
     const registrationMessage = document.getElementById('registrationMessage');
@@ -39,6 +22,12 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             // Handle successful registration response
             registrationMessage.textContent = 'Registration successful';
+            
+            // Redirect to login page after a short delay to show the message
+            setTimeout(() => {
+                window.location.href = '/login';
+                 // Adjust the URL as necessary
+            }, 2000); // Redirect after 2 seconds
         })
         .catch(error => {
             // Handle registration error

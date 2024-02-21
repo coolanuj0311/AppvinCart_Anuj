@@ -1,99 +1,97 @@
-body{
-	background-color: hsl(0, 0%, 98%);
+/* Adjusting font styles */
+body {
+    font-family: Arial, sans-serif; /* Changing to a more common font */
 }
 
-h1,h2,h3,h4,h5,h6{
-	color:hsl(0, 0%, 30%);
+/* Improving box element styles */
+.box-element {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Softening the shadow */
+    background-color: #ffffff;
+    border-radius: 8px; /* Increasing border radius for smoother edges */
+    padding: 20px; /* Increasing padding for better spacing */
 }
 
-.box-element{
-	box-shadow:hsl(0, 0%, 80%) 0 0 16px;
-	background-color: #fff;
-	border-radius: 4px;
-	padding: 10px;
+/* Enhancing thumbnail styles */
+.thumbnail {
+    width: 100%;
+    height: auto; /* Making height auto to maintain aspect ratio */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Softening the shadow */
+    border-radius: 8px; /* Increasing border radius for smoother edges */
 }
 
-.thumbnail{
-	width: 100%;
-	height: 200px;
-	-webkit-box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
-    -moz-box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
-    box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
+/* Styling product images */
+.product {
+    border-radius: 8px; /* Matching border radius with thumbnail */
 }
 
-.product{
-	border-radius: 0 0 4px 4px;
+/* Styling the cart icon */
+#cart-icon {
+    width: 30px; /* Increasing size of cart icon */
+    vertical-align: middle; /* Aligning with text */
 }
 
-.bg-dark{
-	background-color: #4f868c!important;
+/* Styling the cart total */
+#cart-total {
+    display: inline-block;
+    text-align: center;
+    color: #fff;
+    background-color: red;
+    width: 25px; /* Increasing size of cart total indicator */
+    height: 25px;
+    border-radius: 50%;
+    font-size: 16px; /* Increasing font size for better visibility */
+    line-height: 25px; /* Centering text vertically */
 }
 
-#cart-icon{
-	width:25px;
-	display: inline-block;
-	margin-left: 15px;
+/* Adjusting column margins for better spacing */
+.col-lg-4,
+.col-lg-6,
+.col-lg-8,
+.col-lg-12 {
+    margin-top: 20px; /* Increasing top margin for better separation */
 }
 
-#cart-total{
-	display: block;
-	text-align: center;
-	color:#fff;
-	background-color: red;
-	width: 20px;
-	height: 25px;
-	border-radius: 50%;
-	font-size: 14px;
+/* Enhancing button styles */
+.btn {
+    border-radius: 8px; /* Increasing button border radius for softer edges */
+    padding: 10px 20px; /* Increasing padding for better clickability */
+    background-color: #4f868c; /* Matching button color with theme */
+    color: #fff; /* Setting text color to white */
+    border: none; /* Removing border for cleaner look */
+    cursor: pointer; /* Showing pointer cursor on hover */
+    transition: background-color 0.3s; /* Adding smooth transition */
 }
 
-.col-lg-4, .col-lg-6, .col-lg-8, .col-lg-12{
-	margin-top: 10px;
+.btn:hover {
+    background-color: #357878; /* Darkening button color on hover */
 }
 
-.btn{
-	border-radius: 0;
+/* Styling form fields */
+.form-field {
+    width: 100%; /* Making form fields full width */
+    padding: 10px; /* Increasing padding for better spacing */
+    border: 1px solid #ccc; /* Adding border for clearer separation */
+    border-radius: 8px; /* Matching border radius with other elements */
 }
 
-.row-image{
-	width: 100px;
+/* Styling quantity and change quantity button */
+.quantity {
+    font-weight: bold; /* Making quantity text bold for emphasis */
+    margin-right: 10px; /* Adding right margin for spacing */
 }
 
-.form-field{
-	width:250px;
-	display: inline-block;
-	padding: 5px;
+.chg-quantity {
+    width: 20px; /* Increasing button size */
+    height: 20px;
+    cursor: pointer;
+    transition: transform 0.2s; /* Adding smooth transition for hover effect */
 }
 
-.cart-row{
-	display: flex;
-    align-items: flex-stretch;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #ececec;
-
+.chg-quantity:hover {
+    transform: scale(1.1); /* Scaling up on hover for visual feedback */
 }
 
-.quantity{
-	display: inline-block;
-	font-weight: 700;
-	padding-right:10px;
-	
-
-}
-
-.chg-quantity{
-	width: 12px;
-	cursor: pointer;
-	display: block;
-	margin-top: 5px;
-	transition:.1s;
-}
-
-.chg-quantity:hover{
-	opacity: .6;
-}
-
-
-.hidden{
-	display: none!important;
+/* Making hidden class more flexible */
+.hidden {
+    display: none !important; /* Hiding elements completely */
 }
