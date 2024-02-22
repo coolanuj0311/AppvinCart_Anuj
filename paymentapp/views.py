@@ -10,6 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 from accounted.models import User
 from store.models import Order
 from paymentapp.models import Payment
+from django.db.models import Sum
+from store.utils import cartData
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -23,20 +25,27 @@ class CheckoutView(View):
         user = User.objects.get(id=user_id)
         order_ids = request.GET.getlist('order_ids[]') 
         orders = Order.objects.filter(id__in=request.session.get('order_ids', []))
-        total_amount = 0
+        data=cartData(request)
+        cartItems=data['cartItems']
+        order=data['order']
+        items=data['items']
+        total_amount = 0  # Initialize total amount
+
         for order_id in order_ids:
             order = Order.objects.get(pk=order_id)
-            products = order.product.all()
-            order_amount = sum(product.price for product in products)
-            total_amount += order_amount
+            # Calculate total amount for the order
+            order_amount = order.get_cart_total
+            total_amount += order_amount  # Add order amount to total amount
+
         context = {
-                'user': user,
-                'orders': orders,
-                'total_amount': total_amount,
-            }
-        print(123)
+            'user': user,
+            'orders': orders,
+            'total_amount': total_amount,
+            'items': items, 'order': order, 'cartItems': cartItems
+        }
+
         request.session['order_ids'] = order_ids
-        return render(request, 'proceed_checkout.html',context)
+        return render(request, 'proceed_checkout.html', context)
 
     def post(self, request,*args,**kwargs):
         user_id = kwargs.get('user_id')
@@ -57,17 +66,16 @@ class CheckoutView(View):
             # Iterate over order IDs
             for order_id in order_ids:
                 order = Order.objects.get(pk=order_id)
-                products = order.product.all()  # Get all products related to the order
                 # Calculate total amount for the order
-                order_amount = sum(product.price for product in products)
+                order_amount = order.get_cart_total()
                 total_amount += order_amount  # Add order amount to total amount
                 # Create payment intent items for each product in the order
-                for product in products:
+                for order_item in order.orderitem_set.all():
                     payment_intent_items.append({
-                        'amount': product.price * 100,  # Amount in cents
+                        'amount': order_item.get_total * 100,  # Amount in cents
                         'currency': currency,
-                        'description': product.name,
-                        'quantity': 1, 
+                        'description': order_item.product.name,
+                        'quantity': order_item.quantity,
                     })
             print(payment_intent_items)
             # Create or retrieve a customer in Stripe
@@ -138,19 +146,25 @@ class PayForCheckoutView(View):
         print('********************************')
         print(orders)
         print(client_secret)
-        total_amount = 0
+        data=cartData(request)
+        cartItems=data['cartItems']
+        order=data['order']
+        items=data['items']
+        total_amount = 0  # Initialize total amount
+
         for order_id in order_ids:
-                order = Order.objects.get(pk=order_id)
-                products = order.product.all()
-                # Calculate total amount for the order
-                order_amount = sum(product.price for product in products)
-                total_amount += order_amount
+            order = Order.objects.get(pk=order_id)
+            # Calculate total amount for the order
+            order_amount = order.get_cart_total
+            total_amount += order_amount  # Add order amount to total amount
         context = {
             'client_secret': client_secret,
             'user': user,
             'orders': orders,
             'total_amount': total_amount,
-            'payment_id': payment_id
+            'payment_id': payment_id,
+            'items': items, 'order': order, 'cartItems': cartItems
+            
         }
         return render(request, 'checkoutS.html',context) 
 

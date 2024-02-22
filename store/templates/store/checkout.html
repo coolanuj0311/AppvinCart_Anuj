@@ -50,7 +50,7 @@
 
 
             <button id="make-payment">Make Payment</button>
-            <a class="btn btn-outline-dark" href="{% url 'payment_method' %}">&#x2190;Payment using Stripe</a>
+            <a class="btn btn-outline-dark" href="{% url 'checkoutS' user_id=request.user.id %}">&#x2190;Payment using Stripe</a>
             
            
         </div>
@@ -65,7 +65,9 @@
             <h3>Order Summary</h3>
             <hr>
             {% for item in items %}
-            <div class="cart-row">
+            <div class="col-lg-4 col-md-6 mb-4">
+             
+
                 <div style="flex:2"><img class="row-image" src="{{ item.product.imageURL }}"></div>
                 <div style="flex:2"><p>{{ item.product.name }}</p></div>
                 <div style="flex:1"><p>{{ item.product.price|floatformat:2 }}</p></div>

@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'accounted',
    # 'payments.apps.PaymentsConfig',
-    'payments',
+    
     'paymentapp',
 ]
 

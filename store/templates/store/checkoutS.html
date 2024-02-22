@@ -3,64 +3,127 @@
 <head>
     <title>Checkout</title>
     <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f8f8;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        ul li {
+            margin-bottom: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Checkout Summary</h1>
-    <br>
-    {{ client_secret }}
-    <p>Payment for user: {{ user.first_name }} {{ user.last_name }}</p>
-    <ul>
-        {% for order in orders %}
-            {% for product in order.product.all %}
-                {{ product.name }}  - ${{ product.price }}<br>{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-        {% endfor %}
-    </ul>
-    <p>Total Amount: $3050</p>
-    
-    <form id="payment-form">
-        <div id="payment-element">
-            <!-- Elements will create form elements here -->
-        </div>
-        <button id="submit">Submit</button>
-        <div id="error-message">
-            <!-- Display error message to your customers here -->
-        </div>
-    </form>
+    <div class="container">
+        <h1>Checkout Summary</h1>
+        <p>Payment for user: {{ user.name }}</p>
+        <ul>
+            <h5>Items: {{ order.get_cart_items }}</h5>
+            <h5>Total Amount: ${{ order.get_cart_total }}</h5>
+        </ul>
+
+        
+        
+        <form id="payment-form">
+            <div id="payment-element">
+                <!-- Elements will create form elements here -->
+            </div>
+            <button id="submit">Submit</button>
+            <div id="error-message">
+                <!-- Display error message to your customers here -->
+            </div>
+        </form>
+    </div>
 
     <script>
-// Set up Stripe.js and Elements to use in checkout form
-var stripe = Stripe('pk_test_51OjyPXSHvzT4MJlEa98zk4ckAM6Mr4w3jWXJemFxFg9LmIKsJs5zIrzzyA3CPo3nU931Or7jlHhDwIxVKcBoyV0v00YVRQ4H9B');
-var elements = stripe.elements();
-var paymentElement = elements.create('card');
-paymentElement.mount('#payment-element');
-var clientSecret = "{{ client_secret }}";
-var form = document.getElementById('payment-form');
-var payment_id = "{{ payment_id }}";
+        // Set up Stripe.js and Elements to use in checkout form
+        var stripe = Stripe('pk_test_51OjyPXSHvzT4MJlEa98zk4ckAM6Mr4w3jWXJemFxFg9LmIKsJs5zIrzzyA3CPo3nU931Or7jlHhDwIxVKcBoyV0v00YVRQ4H9B');
+        var elements = stripe.elements();
+        var paymentElement = elements.create('card');
+        paymentElement.mount('#payment-element');
+        var clientSecret = "{{ client_secret }}";
+        var form = document.getElementById('payment-form');
+        var payment_id = "{{ payment_id }}";
 
-form.addEventListener('submit', function(event) {
-    event.preventDefault();
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
 
-    stripe.confirmPayment({ clientSecret,
-        payment_method: {
-            card: paymentElement, // Specify the card element or other payment method
-        },
-        confirmParams: {
-            // Return URL where the customer should be redirected after the PaymentIntent is confirmed.
-            return_url: 'http://127.0.0.1:8000/pay/payment_success/'+payment_id,
-        }
-    }).then(function(result) {
-        if (result.error) {
-            // Display error message to customer
-            var errorElement = document.getElementById('error-message');
-            errorElement.textContent = result.error.message;
-        } else {
-            // Payment successful, redirect or show success message
-            window.location.href = '/pay/payment_success/'+payment_id+'/';
-        }
-    });
-});
-
+            stripe.confirmPayment({ 
+                clientSecret,
+                payment_method: {
+                    card: paymentElement, // Specify the card element or other payment method
+                },
+                confirmParams: {
+                    // Return URL where the customer should be redirected after the PaymentIntent is confirmed.
+                    return_url: 'http://127.0.0.1:8000/payment_success/'+payment_id,
+                }
+            }).then(function(result) {
+                if (result.error) {
+                    // Display error message to customer
+                    var errorElement = document.getElementById('error-message');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    // Payment successful, redirect or show success message
+                    window.location.href = '/payment_success/'+payment_id+'/';
+                }
+            });
+        });
     </script>
 </body>
-</html> 
+</html>

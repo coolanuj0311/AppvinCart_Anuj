@@ -1,41 +1,92 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Checkout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
     <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
-    <h1>Checkout Summary</h1>
-    <br>
-    <p>Payment for user: {{ user.first_name }} {{ user.last_name }}</p>
-    <ul>
-        {% for order in orders %}
-            {% for product in order.product.all %}
-                {{ product.name }}  - ${{ product.price }}<br>{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-        {% endfor %}
-    </ul>
-    <p>Total Amount: $3050</p>
-    
-    <!-- Display payment method form -->
-    <form id="payment-form" method="post" action="{% url 'checkoutS' user_id=request.user.id %}">
-        {% csrf_token %}
-        <div id="payment-element">
-            <!-- Elements will create form elements here -->
-        </div>
-        <input type="hidden" id="paymentMethodId" name="paymentMethodId">
-        <input type="text" id="shippingName" name="shippingName" placeholder="Enter Shipping Name" required>
-        <input type="text" id="shippingAddress" name="shippingAddress" placeholder="Enter Shipping Address" required>
-        <input type="text" id="shippingCity" name="shippingCity" placeholder="Enter shippingCity" required>
-        <input type="text" id="shippingCountry" name="shippingCountry" placeholder="Enter shippingCountry" required>
-        <input type="text" id="shippingState" name="shippingState" placeholder="Enter shippingState" required>
+    <div class="container">
+        <h1>Checkout Summary</h1>
+        <p>Payment for user: {{ user.name}}</p>
+        <ul>
+            <h5>Items: {{ order.get_cart_items }}</h5>
+            <h5>Total Amount: ${{ order.get_cart_total }}</h5>
+        </ul>
+        
+        
+        <!-- Display payment method form -->
+        <form id="payment-form" method="post" action="{% url 'checkoutS' user_id=request.user.id %}">
+            {% csrf_token %}
+            <div id="payment-element">
+                <!-- Elements will create form elements here -->
+            </div>
+            <input type="hidden" id="paymentMethodId" name="paymentMethodId">
+            <input type="text" id="shippingName" name="shippingName" placeholder="Enter Shipping Name" required>
+            <input type="text" id="shippingAddress" name="shippingAddress" placeholder="Enter Shipping Address" required>
+            <input type="text" id="shippingCity" name="shippingCity" placeholder="Enter Shipping City" required>
+            <input type="text" id="shippingCountry" name="shippingCountry" placeholder="Enter Shipping Country" required>
+            <input type="text" id="shippingState" name="shippingState" placeholder="Enter Shipping State" required>
 
-
-        <button id="submit-payment">Proceed to Payment</button>
-        <div id="error-message">
-            <!-- Display error message to your customers here -->
-        </div>
-    </form>
+            <button id="submit-payment">Proceed to Payment</button>
+            <div id="error-message">
+                <!-- Display error message to your customers here -->
+            </div>
+        </form>
+    </div>
 
     <script>
         // Set up Stripe.js and Elements to use in checkout form
