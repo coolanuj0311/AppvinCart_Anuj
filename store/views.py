@@ -42,7 +42,12 @@ from .models import Order
 def my_orders(request):
     # Get orders associated with the logged-in user
     orders = Order.objects.filter(customer=request.user.customer, complete=True)
-    context = {'orders': orders}
+    data=cartData(request)
+    cartItems=data['cartItems']
+    order=data['order']
+    items=data['items']
+   
+    context = {'orders': orders,'items': items, 'order': order, 'cartItems': cartItems}
     return render(request, 'my_orders.html', context)
 
 

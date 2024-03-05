@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Orders</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,59 +16,68 @@
         }
 
         .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
+            margin-top: 20px;
+        }
+
+        .order-details {
+            border: 1px solid #dee2e6;
             border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
+        .item-details {
+            margin-left: 30px;
+            margin-top: 10px;
         }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            margin-bottom: 10px;
+        .item-details img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 8px;
         }
 
         hr {
-            border: 0;
-            border-top: 1px solid #ddd;
-            margin: 10px 0;
-        }
-
-        p {
-            text-align: center;
+            margin: 20px 0;
+            border-color: #ddd;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>My Orders</h1>
-        <ul>
-            {% for order in orders %}
-                {% comment %} <li><strong>Person_Ordered:</strong> {{ order.customer}}</li> {% endcomment %}
-                <li><strong>Order ID:</strong> {{ order.id }}</li>
-                <li><strong>Order Date:</strong> {{ order.date_ordered }}</li>
-                <li><strong>Items:</strong> {{ order.get_cart_items }}</li>
-                <li><strong>Total:</strong> ${{ order.get_cart_total }}</li>
-               
-                
-               
-              
+        <h1 class="text-center mb-4">My Orders</h1>
+        {% for order in orders %}
+            <div class="order-details">
+                <p><strong>Order ID:</strong> {{ order.id }}</p>
+                <p><strong>Order Date:</strong> {{ order.date_ordered }}</p>
+                <p><strong>Items:</strong></p>
+                <ul class="list-unstyled item-details">
+                    {% for item in order.orderitem_set.all %}
+                        <li class="media">
+                            <img src="{{ item.product.imageURL }}" alt="{{ item.product.name }}" class="mr-3">
+                            <div class="media-body">
+                                <h5 class="mt-0">{{ item.product.name }}</h5>
+                                <p><strong>Price:</strong> ${{ item.product.price }}</p>
+                                <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <p class="mt-3"><strong>Total:</strong> ${{ order.get_cart_total }}</p>
+            </div>
+            {% if not forloop.last %}
                 <hr>
-            {% empty %}
-                <p>No orders found.</p>
-            {% endfor %}
-            
-        </ul>
+            {% endif %}
+        {% empty %}
+            <div class="alert alert-warning" role="alert">
+                No orders found.
+            </div>
+        {% endfor %}
     </div>
+
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
