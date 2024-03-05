@@ -7,8 +7,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const formData = new FormData(registrationForm);
 
+        // Perform client-side form validation
+        const password = formData.get('password');
+        const confirmPassword = formData.get('confirm Password');
+        if (!formData.get('username') || !formData.get('password') || !formData.get('confirm Password')) {
+            registrationMessage.textContent = 'Please fill out all required fields.';
+            return;
+        }
+        if (password !== confirmPassword) {
+            registrationMessage.textContent = 'Passwords do not match.';
+            return;
+        }
+
         // Send POST request to backend API
-        fetch('/register/', {
+        fetch(url, {
             method: 'POST',
             body: formData
         })
@@ -16,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 return response.json();
             } else {
-                throw new Error('Registration failed');
+                throw new Error('Registration failed. Please try again later.');
             }
         })
         .then(data => {
@@ -25,8 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Redirect to login page after a short delay to show the message
             setTimeout(() => {
-                window.location.href = '/login';
-                 // Adjust the URL as necessary
+                window.location.href = 'login';
             }, 2000); // Redirect after 2 seconds
         })
         .catch(error => {

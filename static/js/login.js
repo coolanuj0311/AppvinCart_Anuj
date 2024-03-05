@@ -23,11 +23,21 @@ document.addEventListener('DOMContentLoaded', function() {
             // Handle successful login response
             loginMessage.textContent = 'Login successful';
             // Optionally, redirect the user to another page after successful login
-            // window.location.href = '/dashboard';
+            setTimeout(() => {
+                window.location.href = 'store';
+                 // Adjust the URL as necessary
+            }, 2000); // Redirect after 2 seconds
+        
+            
         })
         .catch(error => {
             // Handle login error
             loginMessage.textContent = 'Login failed: ' + error.message;
+            setTimeout(() => {
+                window.location.href = 'login';
+                 // Adjust the URL as necessary
+            }, 2000); // Redirect after 2 seconds
+        
         });
     });
 });

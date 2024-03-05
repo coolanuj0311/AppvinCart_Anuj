@@ -33,6 +33,20 @@ def store(request):
     context = {'products': products, 'cartItems': cartItems}
     return render(request, 'store/store.html', context)
 
+def profile(request):
+    return render(request, 'profile.html')
+
+from django.shortcuts import render
+from .models import Order
+
+def my_orders(request):
+    # Get orders associated with the logged-in user
+    orders = Order.objects.filter(customer=request.user.customer, complete=True)
+    context = {'orders': orders}
+    return render(request, 'my_orders.html', context)
+
+
+ 
 def cart(request):
     data=cartData(request)
     cartItems=data['cartItems']

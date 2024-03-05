@@ -4,23 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <!-- Add any CSS stylesheets here -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center; /* Added to center profile photo */
+        }
+        h1 {
+            margin-bottom: 30px;
+            color: #333; /* Darker shade of grey */
+        }
+        .profile-info {
+            margin-bottom: 20px;
+        }
+        .profile-info label {
+            font-weight: bold;
+            color: #666; /* Lighter shade of grey */
+        }
+        .profile-info p {
+            margin: 5px 0;
+            color: #333; /* Darker shade of grey */
+        }
+        .profile-photo {
+            margin-bottom: 20px;
+        }
+        .profile-photo img {
+            width: 150px; /* Adjust size as needed */
+            height: 150px; /* Adjust size as needed */
+            border-radius: 50%; /* Makes the image round */
+            border: 3px solid #fff; /* White border around the image */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Adds a shadow */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>User Profile</h1>
-        <div class="profile-info">
-            <label>Email:</label>
-            <p id="email">{{ profile.email }}</p>
+        <div class="profile-photo">
+            <img src="https://media.licdn.com/dms/image/D5603AQFR5Btl-vHDrA/profile-displayphoto-shrink_200_200/0/1708279908464?e=1714003200&v=beta&t=2FmW-Buv87PsKhS2xJdrY2s4tqfvTVJMmkrWQ6sSggA" alt="Profile Photo">
         </div>
         <div class="profile-info">
-            <label>Name:</label>
-            <p id="name">{{ profile.name }}</p>
+            <label for="name">Name:</label>
+            <p id="name">Anuj Pratap Singh</p>
         </div>
-        <!-- Add additional profile information fields here -->
+        <div class="profile-info">
+            <label for="email">Email:</label>
+            <p id="email">anujpratapsingh###@gmail.com</p>
+        </div>
+        <div class="profile-info">
+            <label for="phone">Phone:</label>
+            <p id="phone">800970****</p>
+        </div>
     </div>
-
-    <!-- Include profile.js script -->
-    <script src="{% static 'js/profile.js' %}"></script>
 </body>
 </html>

@@ -1,0 +1,72 @@
+<!-- my_orders.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #ddd;
+            margin: 10px 0;
+        }
+
+        p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>My Orders</h1>
+        <ul>
+            {% for order in orders %}
+                {% comment %} <li><strong>Person_Ordered:</strong> {{ order.customer}}</li> {% endcomment %}
+                <li><strong>Order ID:</strong> {{ order.id }}</li>
+                <li><strong>Order Date:</strong> {{ order.date_ordered }}</li>
+                <li><strong>Items:</strong> {{ order.get_cart_items }}</li>
+                <li><strong>Total:</strong> ${{ order.get_cart_total }}</li>
+               
+                
+               
+              
+                <hr>
+            {% empty %}
+                <p>No orders found.</p>
+            {% endfor %}
+            
+        </ul>
+    </div>
+</body>
+</html>

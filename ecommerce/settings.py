@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     'rest_framework',
     'rest_framework_simplejwt',
+  
     'corsheaders',
     'accounted',
    # 'payments.apps.PaymentsConfig',
@@ -93,6 +94,9 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': 'Anuj@123',
         'PORT': '3306',
+        'OPTIONS': {
+            'unix_socket': '/tmp/mysqlx.sock',  # Adjust this path accordingly
+        },
     }
 }
 # DATABASES = {
@@ -195,3 +199,5 @@ CORS_ALLOWED_ORIGINS = [
 STRIPE_PUBLIC_KEY="pk_test_51OjyPXSHvzT4MJlEa98zk4ckAM6Mr4w3jWXJemFxFg9LmIKsJs5zIrzzyA3CPo3nU931Or7jlHhDwIxVKcBoyV0v00YVRQ4H9B"
 STRIPE_PRIVATE_KEY="sk_test_51OjyPXSHvzT4MJlEjQZYzE8ZZek9oh7fW6rdyQMjLxpVTPTXfbAVXtvlAjCc1BG6W5oDG2zK21rdazMeeGCURHHD008sz9EMrt"
 STRIPE_SECRET_KEY="sk_test_51OjyPXSHvzT4MJlEjQZYzE8ZZek9oh7fW6rdyQMjLxpVTPTXfbAVXtvlAjCc1BG6W5oDG2zK21rdazMeeGCURHHD008sz9EMrt"
+
+

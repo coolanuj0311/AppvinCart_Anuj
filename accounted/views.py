@@ -31,8 +31,9 @@ class UserRegistrationView(APIView):
             user = serializer.save()
             token = get_tokens_for_user(user)
             return Response({'token':token ,'msg':'Registration Successful'}, status = status.HTTP_201_CREATED) # status is 201 as data is being created
-            return redirect('login')
+            
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    
 class UserLoginView(APIView):
     renderer_classes =[UserRenderer, TemplateHTMLRenderer]
     template_name = 'login.html'
@@ -61,11 +62,10 @@ class UserProfileView(APIView):
   permission_classes = [IsAuthenticated]
   def get(self, request, format=None):
     serializer = UserProfileSerializer(request.user)
-    return Response({"profile":serializer.data}, status = status.HTTP_200_OK, template_name='profile.html')
+    return Response({"profile":serializer.data}, status = status.HTTP_200_OK, template_name='profileAPI.html')
   
 
 
- 
 
 class UserChangePasswordView(APIView):
    

@@ -83,7 +83,7 @@
                     <a class="nav-link" href="{% url 'cart' %}">Cart</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'checkout' %}">Order</a>
+                    <a class="nav-link" href="{% url 'my_orders' %}">Order</a>
                 </li>
                 {% comment %} <li class="nav-item">
                     <a class="nav-link" href="{% url 'login' %}">Profile</a>
@@ -101,9 +101,12 @@
                     </div>
                 </li>
                 
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                </li>
             </ul>
-            <div class="form-inline my-2 my-lg-0">
-                <a href="{% url 'register' %}" class="btn btn-warning">Login</a>
+            <div class="navbar-nav ml-auto">
+                <a href="{% url 'register' %}" class="btn btn-warning mr-3">Login</a>
                 <a href="{% url 'cart' %}">
                     <img id="cart-icon" src="{% static 'images/cart.png' %}">
                 </a>
@@ -122,5 +125,6 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+    
 </body>
 </html>
