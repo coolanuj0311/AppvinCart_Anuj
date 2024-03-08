@@ -7,7 +7,7 @@ from accounted.renderers import UserRenderer
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
-
+from django.shortcuts import redirect
 # Generate Token Manually
 def get_tokens_for_user(user):
   refresh = RefreshToken.for_user(user)
@@ -56,6 +56,7 @@ class UserLoginView(APIView):
                 # return redirect('home')
             else:
                 return Response({'errors':{'non_field_errors': ['Email or Password is not valid']}}, status = status.HTTP_404_NOT_FOUND)
+
  
 class UserProfileView(APIView):
   renderer_classes = [UserRenderer,TemplateHTMLRenderer]

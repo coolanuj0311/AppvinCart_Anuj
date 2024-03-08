@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Static CSS styling -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            color: red;
+        }
+
+        .messages li {
+            margin-bottom: 5px;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+
+         <!-- Messages rendering -->
+        {% if messages %}
+         <ul class="messages">
+             {% for message in messages %}
+                 <li>{{ message }}</li>
+             {% endfor %}
+         </ul>
+        {% endif %}
+        <form action="{% url 'LoginA' %}" method="post">
+            {% csrf_token %} <!-- Include CSRF token here -->
+            <!-- Username input -->
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <!-- Password input -->
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <!-- Submit button -->
+            <button type="submit">Login</button>
+        </form>
+       
+        <!-- Link to register page -->
+        <p>Don't have an account? <a href="{% url 'SignUpA' %}">Register here</a></p>
+        <a href="{% url 'forgotPasswordA' %}">Forgot Password</a>
+
+    </div>
+    <a href="{% url 'store' %}">Go to Home</a>
+</body>
+</html>

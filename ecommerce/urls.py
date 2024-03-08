@@ -37,6 +37,7 @@ urlpatterns = [
     
     path('',include('paymentapp.urls')),
    
+   
     
    
     

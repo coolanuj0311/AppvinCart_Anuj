@@ -46,6 +46,7 @@ INSTALLED_APPS = [
    # 'payments.apps.PaymentsConfig',
     
     'paymentapp',
+
 ]
 
 MIDDLEWARE = [
